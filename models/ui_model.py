@@ -19,7 +19,7 @@ class UIModel(BaseModel):
 
         netG_input_nc = opt.label_nc
         if not opt.no_instance:
-            netG_input_nc += 1            
+            netG_input_nc += 3
         if self.use_features:   
             netG_input_nc += opt.feat_num           
 
@@ -61,8 +61,8 @@ class UIModel(BaseModel):
             inst_img = Image.open(inst_path)        
             inst_img = inst_img.resize((w, h), Image.NEAREST)            
             self.inst_map = self.toTensor(inst_img).cuda()
-            self.edge_map = self.get_edges(self.inst_map)          
-            self.net_input = Variable(torch.cat((self.input_label, self.edge_map), dim=1), volatile=True)
+            # self.edge_map = self.get_edges(self.inst_map)
+            self.net_input = Variable(torch.cat((self.input_label, self.inst_map), dim=1), volatile=True)
         else:
             self.net_input = Variable(self.input_label, volatile=True)  
         
