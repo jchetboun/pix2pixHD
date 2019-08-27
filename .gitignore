@@ -39,3 +39,6 @@ test/data/legacy_serialized.pt
 *.DS_Store
 *~
 .idea
+output
+results
+datasets/makeup
