@@ -38,7 +38,7 @@ class AlignedDataset(BaseDataset):
         A = Image.open(A_path)
         params = get_params(self.opt, A.size)
         if self.opt.label_nc == 0:
-            transform_A = get_transform(self.opt, params)
+            transform_A = get_transform(self.opt, params, normalize=False)
             A_tensor = transform_A(A.convert('L'))
         else:
             transform_A = get_transform(self.opt, params, method=Image.NEAREST, normalize=False)
