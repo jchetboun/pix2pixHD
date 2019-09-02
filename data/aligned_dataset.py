@@ -36,7 +36,7 @@ class AlignedDataset(BaseDataset):
         ### input A (label maps)
         A_path = self.A_paths[index]              
         A = Image.open(A_path).convert('L')
-        print A.shape
+        print(A.shape)
         params = get_params(self.opt, A.size)
         if self.opt.label_nc == 0:
             transform_A = get_transform(self.opt, params)
