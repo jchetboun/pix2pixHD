@@ -1,0 +1,5 @@
+--extra-index-url https://shared:HF6w0RbukY@packages.allegro.ai/repository/allegroai/simple
+--extra-index-url https://shared:HF6w0RbukY@packages.allegro.ai/repository/allegroai/simple allegroai[gs]
+allegroai==3.5.7rc2
+dominate
+wandb

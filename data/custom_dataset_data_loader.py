@@ -11,13 +11,25 @@ def CreateDataset(opt):
     dataset.initialize(opt)
     return dataset
 
+def CreateClearmlDataset(opt):
+    dataset = None
+    from data.clearml_aligned_dataset import ClearmlAlignedDataset
+    dataset = ClearmlAlignedDataset()
+
+    print("dataset [%s] was created" % (dataset.name()))
+    dataset.initialize(opt)
+    return dataset
+
 class CustomDatasetDataLoader(BaseDataLoader):
     def name(self):
         return 'CustomDatasetDataLoader'
 
     def initialize(self, opt):
         BaseDataLoader.initialize(self, opt)
-        self.dataset = CreateDataset(opt)
+        if opt.clearml_name != '' and opt.clearml_version != '':
+            self.dataset = CreateClearmlDataset(opt)
+        else:
+            self.dataset = CreateDataset(opt)
         self.dataloader = torch.utils.data.DataLoader(
             self.dataset,
             batch_size=opt.batchSize,

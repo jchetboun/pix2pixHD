@@ -36,6 +36,10 @@ class BaseOptions():
         self.parser.add_argument('--no_flip', action='store_true', help='if specified, do not flip the images for data argumentation') 
         self.parser.add_argument('--nThreads', default=2, type=int, help='# threads for loading data')                
         self.parser.add_argument('--max_dataset_size', type=int, default=float("inf"), help='Maximum number of samples allowed per dataset. If the dataset directory contains more than max_dataset_size, only a subset is loaded.')
+        self.parser.add_argument('--clearml_name', type=str, default='', help='Clearml aligned dataset name')
+        self.parser.add_argument('--clearml_version', type=str, default='', help='Clearml aligned dataset version')
+        self.parser.add_argument('--input_frame', type=str, default='', help='Input frame for Clearml aligned dataset')
+        self.parser.add_argument('--output_frame', type=str, default='', help='Output frame for Clearml aligned dataset')
 
         # for displays
         self.parser.add_argument('--display_winsize', type=int, default=512,  help='display window size')
