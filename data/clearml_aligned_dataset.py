@@ -5,7 +5,7 @@ from PIL import Image
 
 class ClearmlAlignedDataset(BaseDataset):
     def initialize(self, opt):
-        assert self.opt.label_nc == 0
+        assert opt.label_nc == 0
         assert opt.no_instance
         assert not opt.load_features
 

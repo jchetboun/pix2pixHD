@@ -31,7 +31,7 @@ class Visualizer():
             self.writer = tf.summary.FileWriter(self.log_dir)
 
         if self.use_wandb:
-            self.wandb_run = wandb.init(project=self.wandb_project_name, name=opt.name, config=opt) if not wandb.run else wandb.run
+            self.wandb_run = wandb.init(project=opt.wandb_project_name, name=opt.name, config=opt) if not wandb.run else wandb.run
             self.wandb_run._label(repo='pix2pixHD')
 
         if self.use_html:
