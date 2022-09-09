@@ -10,6 +10,12 @@ try:
 except ImportError:
     from io import BytesIO         # Python 3.x
 
+try:
+    import wandb
+except ImportError:
+    print('Warning: wandb package cannot be found. The option "--use_wandb" will result in error.')
+
+
 class Visualizer():
     def __init__(self, opt):
         # self.opt = opt
@@ -17,11 +23,16 @@ class Visualizer():
         self.use_html = opt.isTrain and not opt.no_html
         self.win_size = opt.display_winsize
         self.name = opt.name
+        self.use_wandb = opt.use_wandb
         if self.tf_log:
             import tensorflow as tf
             self.tf = tf
             self.log_dir = os.path.join(opt.checkpoints_dir, opt.name, 'logs')
             self.writer = tf.summary.FileWriter(self.log_dir)
+
+        if self.use_wandb:
+            self.wandb_run = wandb.init(project=self.wandb_project_name, name=opt.name, config=opt) if not wandb.run else wandb.run
+            self.wandb_run._label(repo='pix2pixHD')
 
         if self.use_html:
             self.web_dir = os.path.join(opt.checkpoints_dir, opt.name, 'web')
@@ -52,6 +63,13 @@ class Visualizer():
             # Create and write Summary
             summary = self.tf.Summary(value=img_summaries)
             self.writer.add_summary(summary, step)
+
+        if self.use_wandb:
+            ims_dict = {}
+            for label, image_numpy in visuals.items():
+                wandb_image = wandb.Image(image_numpy)
+                ims_dict[label] = wandb_image
+            self.wandb_run.log(ims_dict)
 
         if self.use_html: # save images to a html file
             for label, image_numpy in visuals.items():
@@ -97,6 +115,8 @@ class Visualizer():
             for tag, value in errors.items():
                 summary = self.tf.Summary(value=[self.tf.Summary.Value(tag=tag, simple_value=value)])
                 self.writer.add_summary(summary, step)
+        if self.use_wandb:
+            self.wandb_run.log(errors)
 
     # errors: same format as |errors| of plotCurrentErrors
     def print_current_errors(self, epoch, i, errors, t):
