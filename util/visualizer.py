@@ -46,7 +46,6 @@ class Visualizer():
 
     # |visuals|: dictionary of images to display or save
     def display_current_results(self, visuals, epoch, step):
-        visuals["reconstruction"] = visuals["input_label"] + visuals["synthesized_image"]
         if self.tf_log: # show images in tensorboard output
             img_summaries = []
             for label, image_numpy in visuals.items():
